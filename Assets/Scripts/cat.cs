@@ -6,12 +6,22 @@ public class cat : MonoBehaviour
 {
     float full = 5.0f;
     float energy = 0.0f;
+
+    public int type;
+
+    bool isFull = false;
+
     // Start is called before the first frame update
     void Start()
     {
         float x = Random.Range(-8.5f, 8.5f);
         float y = 30.0f;
         transform.position = new Vector3(x, y, 0);
+
+        if (type == 1)
+        {
+            full = 10.0f;
+        }
     }
 
     // Update is called once per frame
@@ -19,7 +29,22 @@ public class cat : MonoBehaviour
     {
         if (energy < full)
         {
-            transform.position += new Vector3(0.0f, -0.05f, 0.0f);
+            if (type == 0)
+            {
+                transform.position += new Vector3(0.0f, -0.05f, 0.0f);
+            }
+            else if (type == 1)
+            {
+                transform.position += new Vector3(0.0f, -0.03f, 0.0f);
+            }
+            else if (type == 2)
+            {
+                transform.position += new Vector3(0.0f, -0.1f, 0.0f);
+            }
+            if (transform.position.y < -16.0f)
+            {
+                gameManager.I.gameOver();
+            }
         }
         else
         {
@@ -47,8 +72,14 @@ public class cat : MonoBehaviour
             }
             else
             {
-                gameObject.transform.Find("hungry").gameObject.SetActive(false);
-                gameObject.transform.Find("full").gameObject.SetActive(true);
+                if (isFull == false)
+                {
+                    gameManager.I.addCat();
+                    gameObject.transform.Find("hungry").gameObject.SetActive(false);
+                    gameObject.transform.Find("full").gameObject.SetActive(true);
+
+                    isFull = true;
+                }
             }
         }
     }
